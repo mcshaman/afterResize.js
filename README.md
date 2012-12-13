@@ -1,4 +1,4 @@
-afterEvent.js
+afterResize.js
 =============
 
-jQuery plugin to run a function a duration after another function is completed
+jQuery plugin to run a user defined callback function a duration after a target element has been resized
