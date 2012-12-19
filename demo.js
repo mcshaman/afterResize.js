@@ -1,8 +1,10 @@
+var fn = function() {
+	alert('Resize event has finished');
+}
+
 $(document).ready(function() {
-	$(window).afterResize( { 
-		action: function() { 
-			$('#display').html('Done');
-		},
-		duration: 500
-	} );
+	$(window).afterResize({ 
+		action: fn,
+		runOnLoad: true
+	});
 });
