@@ -1,10 +1,5 @@
-var fn = function() {
-	alert('Resize event has finished');
-}
-
-$(document).ready(function() {
-	$(window).afterResize({ 
-		action: fn,
-		runOnLoad: true
-	});
+$(document).ready( function() {
+	$(window).afterResize( function() {
+		alert('Resize event has finished');
+	}, true, 100 );
 });
