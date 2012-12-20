@@ -11,15 +11,28 @@
 	// Define global variables
 	var settings = defaults,
 		running = false,
-		start = new Date();
+		start;
 	
 	var methods = {};
 	
 	// Initial plugin configuration
-	methods.init = function init( options ) {
-	
-		// Define runtime settings
-		settings = $.extend( {}, defaults, options );
+	methods.init = function() {
+		
+		// Allocate passed arguments to settings based on type
+		for( var i = 0; i <= arguments.length; i++ ) {
+			var arg = arguments[i];
+			switch ( typeof arg ) {
+				case "function":
+					settings.action = arg;
+					break;
+				case "boolean":
+					settings.runOnLoad = arg;
+					break;
+				case "number":
+					settings.duration = arg;
+					break;
+			}
+		}
 	
 		// Process each matching jQuery object
 		return this.each(function() {
@@ -35,9 +48,9 @@
 		} );
 	};
 	
-	methods.timedAction = function timedAction( code, millisec ) {
+	methods.timedAction = function( code, millisec ) {
 		
-		var doAction = function doAction() {
+		var doAction = function() {
 			var remaining = settings.duration;
 			
 			if( running ) {
@@ -56,7 +69,7 @@
 			wait( remaining );
 		};
 		
-		var wait = function wait( time ) {
+		var wait = function( time ) {
 			running = setTimeout( doAction, time );
 		};
 		
@@ -73,14 +86,12 @@
 	};
 
 	
-	$.fn.afterResize = function afterResize( method ) {
+	$.fn.afterResize = function( method ) {
 		
 		if( methods[method] ) {
 			return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ) );
-		} else if ( typeof method === 'object' || !method ) {
-			return methods.init.apply( this, arguments );
 		} else {
-			$.error( 'Method ' +  method + ' does not exist' );
+			return methods.init.apply( this, arguments );
 		}
 		
 	};
